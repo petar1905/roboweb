@@ -11,7 +11,7 @@ export default function RobotCard({ robot }: RobotCardProps) {
                 <img src={undefined} className="card-img-top" alt={robot.name} />
                 <div className="card-body text-center">
                     <h5 className="card-title">{robot.name}</h5>
-                    <p className="card-text">{robot.activity}</p>
+                    <p className="card-text">{robot.activity ? "Active" : "Inactive"}</p>
                 </div>
             </div>
         </a>
