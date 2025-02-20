@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 
 interface NavigationLinkProps {
     href: string;
-    className: string;
+    className?: string;
     children?: React.ReactNode;
 }
 

@@ -1,4 +1,4 @@
-import Robot from "../classes/Robot";
+import {Robot} from "../classes/RobotInventory";
 
 interface RobotCardProps {
     robot: Robot
