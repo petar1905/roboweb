@@ -44,7 +44,7 @@ export default class RobotInventory {
         });
     }
 
-    async getRobot(id: number): Promise<Robot | null> {
+    async getRobot(id: string): Promise<Robot | null> {
         return new Promise((resolve, reject) => {
             const transaction = this.db.transaction(this.dbStoreName,'readonly');
             const objectStore = transaction.objectStore(this.dbStoreName);
@@ -60,7 +60,7 @@ export default class RobotInventory {
         });
     }
 
-    async deleteRobot(id: number): Promise<void> {
+    async deleteRobot(id: string): Promise<void> {
         return new Promise((resolve, reject) => {
             const transaction = this.db.transaction(this.dbStoreName,'readwrite');
             const objectStore = transaction.objectStore(this.dbStoreName);
@@ -111,7 +111,7 @@ export default class RobotInventory {
         return robot;
     }
 
-    async updateRobot(id: number, name: string, componentFile: string, settings: object): Promise<void> {
+    async updateRobot(id: string, name: string, componentFile: string, settings: object): Promise<void> {
         const robot = await this.getRobot(id);
         if (robot) {
             robot.name = name;
