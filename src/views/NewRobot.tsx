@@ -40,7 +40,7 @@ export default function NewRobot() {
     const extensionInventory = new ExtensionInventory();
     useEffect(() => {
         extensionInventory.openDatabase().then(() => {
-            extensionInventory.getAllExtensions().then((extensions) => {
+            extensionInventory.getInstalledExtensions().then((extensions) => {
                 setExtensions(extensions);
                 const grouped = groupExtensionsByManufacturer(extensions);
                 setGroupedExtensions(grouped);

@@ -40,7 +40,7 @@ export default class ExtensionInventory {
         });
     }
 
-    async getExtension(id: string): Promise<Extension | null> {
+    async getInstalledExtension(id: string): Promise<Extension | null> {
         return new Promise((resolve, reject) => {
             const transaction = this.db.transaction(this.dbStoreName,'readonly');
             const objectStore = transaction.objectStore(this.dbStoreName);
@@ -95,7 +95,6 @@ export default class ExtensionInventory {
         };
         const file = new Blob([data.file], { type: metadata.contentType });
         const extension: Extension = { metadata, file };
-        await this.saveExtension(extension);
         return extension;
     }
 
@@ -113,7 +112,7 @@ export default class ExtensionInventory {
         });
     }
 
-    async getAllExtensions(): Promise<Extension[]> {
+    async getInstalledExtensions(): Promise<Extension[]> {
         return new Promise((resolve, reject) => {
             const transaction = this.db.transaction(this.dbStoreName,'readonly');
             const objectStore = transaction.objectStore(this.dbStoreName);
@@ -128,4 +127,38 @@ export default class ExtensionInventory {
             };
         });
     }
-}
+
+    async getAvailableExtensions(): Promise<Extension[]> {
+        const response = await fetch(`${this.backendUrl}`, {
+            mode: 'cors',
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+    
+        const data = await response.json();
+    
+        if (!response.ok) {
+            throw new Error(data.error || 'Failed to fetch extensions');
+        }
+    
+        const extensions: Extension[] = data.extensions.map((ext: any) => {
+            const metadata: ExtensionMetadata = {
+                id: ext._id,
+                filename: ext.filename,
+                contentType: ext.content_type,
+                model: ext.metadata.model,
+                manufacturer: ext.metadata.manufacturer,
+                author: ext.metadata.author,
+                version: ext.metadata.version,
+                license: ext.metadata.license,
+                repository: ext.metadata.repository,
+                settings: ext.metadata.settings,
+            };
+            const file = new Blob([ext.file], { type: metadata.contentType });
+            return { metadata, file };
+        });
+    
+        return extensions;
+    }
+}   
