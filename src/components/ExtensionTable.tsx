@@ -8,13 +8,13 @@ interface ExtensionTableProps {
 export default function ExtensionTable({extensions}: ExtensionTableProps) {
     return (
         <table className="table table-striped-columns">
-            <ExtensionTableHead/>
+            <ExtensionTableHead extensions={extensions}/>
             <ExtensionTableBody extensions={extensions}/>
         </table>
     )
 }
 
-function ExtensionTableHead() {
+function ExtensionTableHead({extensions}: ExtensionTableProps) {
     return (
         <thead>
             <tr>
@@ -22,7 +22,7 @@ function ExtensionTableHead() {
                 <th>Model</th>
                 <th>Version</th>
                 <th>Author</th>
-                <th></th>
+                {extensions.length > 0 ? <th></th> : null}
             </tr>
         </thead> 
     )
@@ -41,13 +41,23 @@ function ExtensionTableBody({extensions}: ExtensionTableBodyProps) {
                     <td>{extension.metadata.model}</td>
                     <td>{extension.metadata.version}</td>
                     <td>{extension.metadata.author}</td>
-                    <td className="text-center">                    
-                        <NavigationLink href={`/store/${extension.metadata.id}`}>
-                            <button className="btn btn-info">Details</button>
-                        </NavigationLink>
-                    </td>
+                    {extensions.length > 0 ? <ExtensionDetailsButton id={extension.metadata.id}/> : null}
                 </tr>
             })}
         </tbody>
+    )
+}
+
+interface ExtensionDetailsButtonProps {
+    id: string
+}
+
+function ExtensionDetailsButton({id}: ExtensionDetailsButtonProps) {
+    return (
+        <td className="text-center">                    
+            <NavigationLink href={`/store/${id}`}>
+                <button className="btn btn-info">Details</button>
+            </NavigationLink>
+        </td>
     )
 }

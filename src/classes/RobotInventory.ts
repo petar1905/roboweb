@@ -1,4 +1,5 @@
 import { v4 } from "uuid";
+import { Extension } from "./ExtensionInventory";
 
 export class Robot {
     id: string;
@@ -6,16 +7,16 @@ export class Robot {
     activity: boolean;
     creationDate: number;
     accessDate: number;
-    componentFile: string;
+    extension: Extension;
     settings: object;
 
-    constructor(id: string, name: string, componentFile: string, settings: object) {
+    constructor(id: string, name: string, extension: Extension, settings: object) {
         this.id = id;
         this.name = name;
         this.activity = false;
         this.creationDate = Date.now();
         this.accessDate = Date.now();
-        this.componentFile = componentFile;
+        this.extension = extension;
         this.settings = settings;
     }
 }
@@ -25,7 +26,6 @@ export default class RobotInventory {
     private dbVersion: number = 1;
     private dbStoreName: string = 'robots';
     name: string | undefined;
-    activity: any;
 
     async openDatabase(): Promise<void> {
         return new Promise((resolve, reject) => {
@@ -104,18 +104,18 @@ export default class RobotInventory {
         });
     }
 
-    async addRobot(name: string, componentFile: string, settings: object): Promise<Robot> {
+    async createRobot(name: string, extension: Extension, settings: object): Promise<Robot> {
         let newId: string = v4();
-        const robot = new Robot(newId, name, componentFile, settings);
-        await this.saveRobot(robot);
+        const robot = new Robot(newId, name, extension, settings);
+        //await this.saveRobot(robot);
         return robot;
     }
 
-    async updateRobot(id: string, name: string, componentFile: string, settings: object): Promise<void> {
+    async updateRobot(id: string, name: string, extension: Extension, settings: object): Promise<void> {
         const robot = await this.getRobot(id);
         if (robot) {
             robot.name = name;
-            robot.componentFile = componentFile;
+            robot.extension = extension;
             robot.settings = settings;
             await this.saveRobot(robot);
         }

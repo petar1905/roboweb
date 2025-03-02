@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Extension } from "../classes/ExtensionInventory";
 import ExtensionInventory from "../classes/ExtensionInventory";
 import CheckboxButton from "../components/CheckboxButton";
-import RobotInventory from "../classes/RobotInventory";
+import RobotInventory, { Robot } from "../classes/RobotInventory";
 import { useNavigate } from "react-router";
 import Dropdown from "../components/Dropdown";
 import SettingsForm from "../components/SettingsForm";
@@ -71,14 +71,16 @@ export default function NewRobot() {
     };
     const handleFinish = () => {
         const robotInventory = new RobotInventory();
+        const saveRobot = (robot: Robot) => robotInventory.saveRobot(robot);
         robotInventory.openDatabase().then(
             () => {
                 /* @ts-ignore */
-                robotInventory.addRobot(name, selectedExtension.metadata.filename, settings);
+                const newRobot = robotInventory.createRobot(name, selectedExtension, settings).then(saveRobot);
                 navigate("/");
             }
         );
     };
+
     return (
         <div className="p-2">
             <h1>New Robot</h1>
