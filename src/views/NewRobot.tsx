@@ -33,7 +33,7 @@ export default function NewRobot() {
     const [name, setName] = useState("");
     const [selectedBrand, setSelectedBrand] = useState("");
     const [selectedModel, setSelectedModel] = useState("");
-    const [groupedExtensions, setGroupedExtensions]: [Record<string, string[]>, React.Dispatch<React.SetStateAction<Record<string, string[]>>>]   = useState({}) ;
+    const [groupedExtensions, setGroupedExtensions]= useState<Record<string, string[]>>({}) ;
     const [selectedExtension, setSelectedExtension] = useState<Extension | null>(null);
     const [extensions, setExtensions] = useState<Extension[]>([]);
     const [settings, setSettings] = useState({});
@@ -58,7 +58,9 @@ export default function NewRobot() {
     };
     const handleModelChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedModel(event.target.value);
-        const extension = extensions.find((ext) => ext.metadata.model === event.target.value && ext.metadata.manufacturer === selectedBrand);
+        const modelMatch = (ext: Extension) => ext.metadata.model === event.target.value;
+        const manufacturerMatch = (ext: Extension) => ext.metadata.manufacturer === selectedBrand;
+        const extension = extensions.find((ext) => modelMatch(ext) && manufacturerMatch(ext));
         if (extension) {
             setSelectedExtension(extension);
             try {
@@ -90,7 +92,11 @@ export default function NewRobot() {
                     <input type="text" onChange={handleNameChange} />
                 </label>
             </div>
-            <Dropdown label="Brand" value={selectedBrand} onChange={handleBrandChange} valueArray={Object.keys(groupedExtensions)}/>
+            <Dropdown label="Brand" 
+            value={selectedBrand} 
+            onChange={handleBrandChange} 
+            valueArray={Object.keys(groupedExtensions)}
+            />
             {selectedBrand && 
                 <Dropdown label="Model" 
                 value={selectedModel} 
