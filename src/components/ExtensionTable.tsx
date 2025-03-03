@@ -1,6 +1,8 @@
 import { Extension } from "../classes/ExtensionInventory";
 import NavigationLink from "./NavigationLink";
 
+import { useMediaQuery } from'react-responsive';
+
 interface ExtensionTableProps {
     extensions: Extension[],
 }
@@ -15,13 +17,14 @@ export default function ExtensionTable({extensions}: ExtensionTableProps) {
 }
 
 function ExtensionTableHead({extensions}: ExtensionTableProps) {
+    const isMobile = useMediaQuery({ maxWidth: 475 });
     return (
         <thead>
             <tr>
                 <th>Manufactuer</th>
                 <th>Model</th>
-                <th>Version</th>
-                <th>Author</th>
+                {!isMobile && <th>Version</th>}
+                {!isMobile && <th>Author</th>}
                 {extensions.length > 0 ? <th></th> : null}
             </tr>
         </thead> 
@@ -33,14 +36,16 @@ interface ExtensionTableBodyProps {
 }
 
 function ExtensionTableBody({extensions}: ExtensionTableBodyProps) {
+    const isMobile = useMediaQuery({ maxWidth: 475 });
+
     return (
         <tbody>
             {extensions.map((extension) => {
                 return <tr key={extension.metadata.id}>
                     <td>{extension.metadata.manufacturer}</td>
                     <td>{extension.metadata.model}</td>
-                    <td>{extension.metadata.version}</td>
-                    <td>{extension.metadata.author}</td>
+                    {!isMobile && <td>{extension.metadata.version}</td>}
+                    {!isMobile && <td>{extension.metadata.author}</td>}
                     {extensions.length > 0 ? <ExtensionDetailsButton id={extension.metadata.id}/> : null}
                 </tr>
             })}

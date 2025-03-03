@@ -5,12 +5,14 @@ import DeleteButton from "../components/DeleteButton";
 import RobotCard from "../components/RobotCard";
 import RobotInventory from "../classes/RobotInventory";
 import { Robot } from "../classes/RobotInventory";
+import { useMediaQuery } from "react-responsive";
 
 export default function Dashboard() {
     const [deleteMode, setDeleteMode] = useState(false);
     const [robots, setRobots] = useState<Robot[]>([]);
     const [selectedRobots, setSelectedRobots] = useState<Robot[]>([]);
     const [refreshRobots, setRefreshRobots] = useState(false);
+    const isMobile = useMediaQuery({ maxWidth: 600 });
 
     const handleToggleDeleteButton = () => {
         setDeleteMode(!deleteMode);
@@ -53,10 +55,12 @@ export default function Dashboard() {
                 <button type="button" className="btn fs-3" onClick={handleToggleDeleteButton}>🚮</button>
             </nav>
             {deleteMode ? <p><em>Please select the robot you would like to delete!</em></p> : null}
-            <div className="d-flex flex-wrap justify-content-start gap-2">
+            <div className="d-flex flex-wrap justify-content-start gap-2" 
+            style={{ flexDirection: isMobile? 'column' : 'row' }}>
                 {robots.map((robot) => {
                     const localHandle = () => handleRobotSelect(robot, deleteMode);
-                    return <RobotCard key={robot.id} robot={robot} onChange={localHandle} deleteMode={deleteMode} />
+                    return <RobotCard key={robot.id} robot={robot} onChange={localHandle} 
+                    deleteMode={deleteMode} style={{ width: isMobile ? "100%" : "18rem" }} />
                 })}
             </div>
             {!deleteMode ? 

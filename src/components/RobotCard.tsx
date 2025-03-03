@@ -4,13 +4,14 @@ import {Robot} from "../classes/RobotInventory";
 interface RobotCardProps {
     robot: Robot,
     deleteMode: boolean,
-    onChange?: ChangeEventHandler<HTMLInputElement> | undefined
+    onChange?: ChangeEventHandler<HTMLInputElement> | undefined,
+    style?: React.CSSProperties | undefined
 }
 
-export default function RobotCard({ robot, deleteMode, onChange }: RobotCardProps) {
+export default function RobotCard({ robot, deleteMode, onChange, style }: RobotCardProps) {
     return (
         <a href={`/robot/${robot.id}`} className="text-decoration-none">
-            <div className="card" style={{ width: "18rem" }}>
+            <div className="card" style={{ ...style}}>
                 <img src={undefined} className="card-img-top" alt={robot.name} />
                 <div className="d-flex">
                     <div className="card-body text-center w-100">
