@@ -82,10 +82,19 @@ export default function NewRobot() {
             }
         );
     };
+    const canCreateRobot = name && selectedBrand && selectedModel;
+    const CreateRobotButton = () => {
+        return (
+            <button type="button" className="btn fs-3 p-0" onClick={handleFinish}>✅</button>
+        )
+    };
 
     return (
         <div className="p-2">
-            <h1>New Robot</h1>
+            <nav className="d-flex pb-2">
+                <h1 className="w-100 my-auto">New Robot</h1>
+                {canCreateRobot ? <CreateRobotButton/> : null}
+            </nav>
             <div>
                 <label>
                     Name:
@@ -106,7 +115,6 @@ export default function NewRobot() {
             {selectedExtension && (
                 <SettingsForm settings={settings} setSettings={setSettings}/>
             )}
-            <CheckboxButton onClick={handleFinish}/>
         </div>
     );
 }

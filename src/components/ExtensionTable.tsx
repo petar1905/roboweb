@@ -21,7 +21,7 @@ function ExtensionTableHead({extensions}: ExtensionTableProps) {
     return (
         <thead>
             <tr>
-                <th>Manufactuer</th>
+                <th>Manufacturer</th>
                 <th>Model</th>
                 {!isMobile && <th>Version</th>}
                 {!isMobile && <th>Author</th>}

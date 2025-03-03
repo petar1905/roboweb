@@ -19,13 +19,29 @@ export default function ExtensionStore() {
             setAvailableExtensions(availableExtensions);
         });
     }, []);
+
+    const InstalledExtensions = () => {
+        return (
+            <>
+                <h5>Installed Extensions</h5>
+                <ExtensionTable extensions={installedExtensions}/>
+            </>
+        )
+    };
+
+    const AvailableExtensions = () => {
+        return (
+            <>
+                <h5>Available Extensions</h5>
+                <ExtensionTable extensions={availableExtensions}/>
+            </>
+        )
+    };
     return (
         <div className="p-2">
             <h1>Extension Store</h1>
-            <h2>Installed Extensions</h2>
-            <ExtensionTable extensions={installedExtensions}/>
-            <h2>Available Extensions</h2>
-            <ExtensionTable extensions={availableExtensions}/>
+            {installedExtensions.length > 0 ? <InstalledExtensions/> : null}
+            {availableExtensions.length > 0 ? <AvailableExtensions/> : null}
         </div>
     )
 }
