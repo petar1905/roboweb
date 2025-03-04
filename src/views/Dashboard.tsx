@@ -11,7 +11,6 @@ export default function Dashboard() {
     const [robots, setRobots] = useState<Robot[]>([]);
     const [selectedRobots, setSelectedRobots] = useState<Robot[]>([]);
     const [refreshRobots, setRefreshRobots] = useState(false);
-    const isMobile = useMediaQuery({ maxWidth: 600 });
 
     const handleToggleDeleteButton = () => {
         setDeleteMode(!deleteMode);
@@ -47,16 +46,6 @@ export default function Dashboard() {
         fetchRobots();
     }, [refreshRobots]);
 
-    const NoRobotsMessage = () => {
-        return (
-            <div className="w-100 h-100 text-center m-auto">
-                <h1>🤖</h1>
-                <p>You do not have any robots yet.</p>
-                <p>Create a new robot by pressing the ➕ button!</p>
-            </div>
-        )
-    };
-
     return (
         <div className="p-2">
             <nav className="d-flex pb-2">
@@ -70,6 +59,21 @@ export default function Dashboard() {
                 <button type="button" className="btn fs-3 p-0" onClick={handleDeleteButton}>✅</button>}
             </nav>
             {deleteMode ? <p><em>Please select the robots you would like to delete!</em></p> : null}
+            <RobotList robots={robots} deleteMode={deleteMode} handleRobotSelect={handleRobotSelect}/>
+        </div>
+    );
+}
+
+interface RobotListProps {
+    robots: Robot[],
+    deleteMode: boolean,
+    handleRobotSelect: (robot: Robot, isChecked: boolean) => void
+}
+
+function RobotList({robots, deleteMode, handleRobotSelect}: RobotListProps) {
+    const isMobile = useMediaQuery({ maxWidth: 600 });
+    return (
+        <>
             {robots.length == 0 ? <NoRobotsMessage/> : null}
             <div className="d-flex flex-wrap justify-content-start gap-2" 
             style={{ flexDirection: isMobile? 'column' : 'row' }}>
@@ -79,6 +83,16 @@ export default function Dashboard() {
                     deleteMode={deleteMode} style={{ width: isMobile ? "100%" : "18rem" }} />
                 })}
             </div>
+        </>
+    )
+}
+
+function NoRobotsMessage() {
+    return (
+        <div className="w-100 h-100 text-center m-auto">
+            <h1>🤖</h1>
+            <p>You do not have any robots yet.</p>
+            <p>Create a new robot by pressing the ➕ button!</p>
         </div>
-    );
+    )
 }
