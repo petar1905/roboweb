@@ -91,6 +91,7 @@ function ExtensionDetailsTableBody({ extension }: { extension: Extension }) {
         }
     }, [extension]);
 
+
     return (
         <tbody>
             <tr>
@@ -117,16 +118,26 @@ function ExtensionDetailsTableBody({ extension }: { extension: Extension }) {
                 <td>License</td>
                 <td>{extension.metadata.license? extension.metadata.license : "Proprietary/Unknown"}</td>
             </tr>
-            {extension.metadata.repository && (
-                <tr>
-                    <td>Repository</td>
-                    <td>
-                        <a href={extension.metadata.repository} target="_blank" rel="noopener noreferrer">
-                            {repositoryName || extension.metadata.repository}
-                        </a>
-                    </td>
-                </tr>
-            )}
+            {extension.metadata.repository && 
+                <RepositoryRow 
+                repositoryLink={extension.metadata.repository} 
+                /* @ts-ignore */
+                repositoryName={repositoryName}
+                />
+            }
         </tbody>
+    )
+}
+
+function RepositoryRow({repositoryLink, repositoryName}: {repositoryLink: string, repositoryName: string}) {
+    return (
+        <tr>
+            <td>Repository</td>
+            <td>
+                <a href={repositoryLink} target="_blank" rel="noopener noreferrer">
+                    {repositoryName || repositoryLink}
+                </a>
+            </td>
+        </tr>
     )
 }
