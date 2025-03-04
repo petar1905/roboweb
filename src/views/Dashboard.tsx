@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import NavigationLink from "../components/NavigationLink";
-import PlusButton from "../components/PlusButton";
-import DeleteButton from "../components/DeleteButton";
 import RobotCard from "../components/RobotCard";
 import RobotInventory from "../classes/RobotInventory";
 import { Robot } from "../classes/RobotInventory";
 import { useMediaQuery } from "react-responsive";
+import NavigationBarButton from "../components/NavigationBarButton";
 
 export default function Dashboard() {
     const [deleteMode, setDeleteMode] = useState(false);
@@ -48,20 +47,6 @@ export default function Dashboard() {
         fetchRobots();
     }, [refreshRobots]);
 
-    const ToggleDeleteButton = () => {
-        return (
-            <button type="button" className="btn fs-3 p-0" onClick={handleToggleDeleteButton}>
-                {!deleteMode ? "🗑️" : "❎"}
-            </button>
-        )
-    };
-
-    const ToggleSearchButton = () => {
-        return (
-            <button type="button" className="btn fs-3 p-0" onClick={handleToggleDeleteButton}>🔍</button>
-        )
-    };
-
     const NoRobotsMessage = () => {
         return (
             <div className="w-100 h-100 text-center m-auto">
@@ -76,11 +61,11 @@ export default function Dashboard() {
         <div className="p-2">
             <nav className="d-flex pb-2">
                 <h1 className="w-100 my-auto">Dashboard</h1>
-                {robots.length > 0 ? <ToggleSearchButton/> : null}
-                {robots.length > 0 ? <ToggleDeleteButton/> : null}
+                {robots.length > 0 ? <NavigationBarButton onClick={handleToggleDeleteButton}>🔍</NavigationBarButton> : null}
+                {robots.length > 0 ? <NavigationBarButton onClick={handleToggleDeleteButton}>{!deleteMode ? "🗑️" : "❎"}</NavigationBarButton> : null}
                 {!deleteMode ? 
                 <NavigationLink href={"/new"}>
-                    <button type="button" className="btn fs-3 p-0">➕</button>
+                    <NavigationBarButton>➕</NavigationBarButton>
                 </NavigationLink> : 
                 <button type="button" className="btn fs-3 p-0" onClick={handleDeleteButton}>✅</button>}
             </nav>

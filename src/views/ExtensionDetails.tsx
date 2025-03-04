@@ -11,24 +11,24 @@ export default function ExtensionDetails() {
 
     useEffect(() => {
         const fetchExtension = async () => {
-            try {
-                await extensionInventory.openDatabase();
+            await extensionInventory.openDatabase();
+            // @ts-ignore
+            const installedExtension = await extensionInventory.getInstalledExtension(extensionId);
+            if (installedExtension) {
+                setIsInstalled(true);
+                setExtension(installedExtension);
+            } else {
+                setIsInstalled(false);
                 // @ts-ignore
-                const installedExtension = await extensionInventory.getInstalledExtension(extensionId);
-                if (installedExtension) {
-                    setIsInstalled(true);
-                    setExtension(installedExtension);
-                } else {
-                    setIsInstalled(false);
-                    // @ts-ignore
-                    const downloadedExtension = await extensionInventory.downloadExtension(extensionId);
-                    setExtension(downloadedExtension);
-                }
-            } catch (error) {
-                console.error('Error fetching extension:', error);
+                const downloadedExtension = await extensionInventory.downloadExtension(extensionId);
+                setExtension(downloadedExtension);
             }
         };
-        fetchExtension();
+        try {
+            fetchExtension();
+        } catch (error) {
+            console.error("Error fetching extension: ", error);
+        }
     }, [extensionId, extensionInventory]);
 
     const handleInstallButtonPress = () => {
@@ -47,19 +47,24 @@ export default function ExtensionDetails() {
         navigate("/store");
     };
 
+
     return (
         <div className="p-2">
             <h1>Details</h1>
-            {extension && (
-                <table className="table table-striped-columns">
-                    <ExtensionDetailsTableHead />
-                    <ExtensionDetailsTableBody extension={extension} />
-                </table>
-            )}
+            {extension && <ExtensionDetailsTable extension={extension}/>}
             {isInstalled? 
             <button className="btn btn-danger" onClick={handleDeleteButtonPress}>Delete</button> :
             <button className="btn btn-success" onClick={handleInstallButtonPress}>Install</button>}
         </div>
+    )
+}
+
+function ExtensionDetailsTable({extension}: {extension: Extension}) {
+    return (
+        <table className="table table-striped-columns">
+            <ExtensionDetailsTableHead />
+            <ExtensionDetailsTableBody extension={extension} />
+        </table>
     )
 }
 

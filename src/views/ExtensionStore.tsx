@@ -7,17 +7,17 @@ export default function ExtensionStore() {
     const [availableExtensions, setAvailableExtensions] = useState<Extension[]>([]);
     const extensionInventory = new ExtensionInventory();
     useEffect(() => {
-        extensionInventory.openDatabase().then(() => {
-            extensionInventory.getInstalledExtensions().then((installedExtensions) => {
-                setInstalledExtensions(installedExtensions);
-            });
-        });
+        const completeProcess = (extensions: Extension[]) => setInstalledExtensions(extensions);
+        const fetchInstalledExtensions = async () => {
+            await extensionInventory.openDatabase();
+            extensionInventory.getInstalledExtensions().then(completeProcess);
+        };
+        fetchInstalledExtensions();
     }, []);
 
     useEffect(() => {
-        extensionInventory.getAvailableExtensions().then((availableExtensions) => {
-            setAvailableExtensions(availableExtensions);
-        });
+        const completeProcess = (extensions: Extension[]) => setAvailableExtensions(extensions);
+        extensionInventory.getAvailableExtensions().then(completeProcess);
     }, []);
 
     const InstalledExtensions = () => {

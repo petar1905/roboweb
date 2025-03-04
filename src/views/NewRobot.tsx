@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Extension } from "../classes/ExtensionInventory";
 import ExtensionInventory from "../classes/ExtensionInventory";
-import CheckboxButton from "../components/CheckboxButton";
 import RobotInventory, { Robot } from "../classes/RobotInventory";
 import { useNavigate } from "react-router";
 import Dropdown from "../components/Dropdown";
 import SettingsForm from "../components/SettingsForm";
+import NavigationBarButton from "../components/NavigationBarButton";
 
 function groupExtensionsByManufacturer(extensions: Extension[]): Record<string, string[]> {
     const manufacturerModelMapping: Record<string, Set<string>> = {};
@@ -39,14 +39,17 @@ export default function NewRobot() {
     const [settings, setSettings] = useState({});
     const extensionInventory = new ExtensionInventory();
     useEffect(() => {
-        extensionInventory.openDatabase().then(() => {
-            extensionInventory.getInstalledExtensions().then((extensions) => {
-                setExtensions(extensions);
-                const grouped = groupExtensionsByManufacturer(extensions);
-                setGroupedExtensions(grouped);
-            });
-        });
-    }, []);
+        const completeProcess = (extensions: Extension[]) => {
+            setExtensions(extensions);
+            const grouped = groupExtensionsByManufacturer(extensions);
+            setGroupedExtensions(grouped);
+        };
+        const fetchExtensions = async () => {
+            await extensionInventory.openDatabase();
+            extensionInventory.getInstalledExtensions().then(completeProcess);
+        };
+        fetchExtensions();
+    });
     const handleBrandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedBrand(event.target.value);
         setSelectedModel("");
@@ -83,17 +86,11 @@ export default function NewRobot() {
         );
     };
     const canCreateRobot = name && selectedBrand && selectedModel;
-    const CreateRobotButton = () => {
-        return (
-            <button type="button" className="btn fs-3 p-0" onClick={handleFinish}>✅</button>
-        )
-    };
-
     return (
         <div className="p-2">
             <nav className="d-flex pb-2">
                 <h1 className="w-100 my-auto">New Robot</h1>
-                {canCreateRobot ? <CreateRobotButton/> : null}
+                {canCreateRobot ? <NavigationBarButton onClick={handleFinish}>✅</NavigationBarButton> : null}
             </nav>
             <div>
                 <label>
