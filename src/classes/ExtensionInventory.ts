@@ -162,19 +162,4 @@ export default class ExtensionInventory {
     
         return extensions;
     }
-
-    async loadExtensionComponent(id: string): Promise<React.ComponentType<any> | null> {
-        try {
-            const extension = await this.getInstalledExtension(id);
-            if (!extension) {
-                throw new Error('Extension not found');
-            }
-            const urlObject = URL.createObjectURL(extension.file);
-            const module = await import(urlObject);
-            return module.ControlComponent;
-        } catch (error) {
-            console.error('Failed to load extension component:', error);
-            return null;
-        }
-    }
 }   
