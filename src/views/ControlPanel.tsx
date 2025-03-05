@@ -17,7 +17,7 @@ export default function ControlPanel() {
             
             import(currentFileURL).then(module => {
                 const ControlComponent = module.ControlComponent || module.default;
-                setControlComponent(<ControlComponent />);
+                setControlComponent(<ControlComponent settings={currentRobot?.settings} />);
             });
             URL.revokeObjectURL(currentFileURL);
         };
