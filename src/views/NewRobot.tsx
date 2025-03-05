@@ -92,22 +92,32 @@ export default function NewRobot() {
                 <h1 className="w-100 my-auto">New Robot</h1>
                 {canCreateRobot ? <NavigationBarButton onClick={handleFinish}>✅</NavigationBarButton> : null}
             </nav>
-            <div>
-                <label>
-                    Name:
-                    <input type="text" onChange={handleNameChange} />
-                </label>
+            <div className="input-group mb-3">
+                <span className="input-group-text" id="basic-addon1">Name</span>
+                <input type="text" 
+                className="form-control" 
+                placeholder="Robot Name" 
+                aria-label="Robot Name" 
+                aria-describedby="basic-addon1"
+                onChange={handleNameChange} />
             </div>
-            <Dropdown label="Brand" 
-            value={selectedBrand} 
-            onChange={handleBrandChange} 
-            valueArray={Object.keys(groupedExtensions)}
-            />
+
+            <p>
+                <Dropdown label="Brand" 
+                value={selectedBrand} 
+                onChange={handleBrandChange} 
+                valueArray={Object.keys(groupedExtensions)}
+                />
+            </p>
             {selectedBrand && 
-                <Dropdown label="Model" 
-                value={selectedModel} 
-                onChange={handleModelChange} 
-                valueArray={groupedExtensions[selectedBrand]}/>
+                <p>
+                    <Dropdown label="Model" 
+                    value={selectedModel} 
+                    onChange={handleModelChange} 
+                    valueArray={groupedExtensions[selectedBrand]}
+                    />
+                </p>
+
             }
             {selectedExtension && (
                 <SettingsForm settings={settings} setSettings={setSettings}/>

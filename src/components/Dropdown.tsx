@@ -8,15 +8,12 @@ interface DropdownProps {
 export default function Dropdown({label, value, onChange, valueArray}: DropdownProps) {
     return (
         <div>
-            <label>
-                {label}: 
-                <select value={value} onChange={onChange}>
-                    <option value="">Select a model</option>
-                    {valueArray.map((model) => (
-                        <option key={model} value={model}>{model}</option>
-                    ))}
-                </select>
-            </label>
+            <select className="form-select" aria-label="Default select example" value={value} onChange={onChange}>
+                <option value="">{label}</option>
+                {valueArray.map((model) => (
+                    <option key={model} value={model}>{model}</option>
+                ))}
+            </select>
         </div>
     )
 }
