@@ -99,7 +99,7 @@ function ExtensionDetailsTableBody({ extension }: { extension: Extension }) {
                 <td>{extension.metadata.id}</td>
             </tr>
             <tr>
-                <td>Manufacturer</td>
+                <td>Vendor</td>
                 <td>{extension.metadata.manufacturer}</td>
             </tr>
             <tr>
