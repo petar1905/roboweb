@@ -11,6 +11,7 @@ import Robot from './classes/RobotInventory.ts';
 import NewRobot from "./views/NewRobot.tsx";
 import ExtensionDetails from './views/ExtensionDetails.tsx';
 import ControlPanel from './views/ControlPanel.tsx';
+import EditRobot from './views/EditRobot.tsx';
 
 interface RobotInventoryContextValue {
     robotInventory: Robot[];
@@ -35,6 +36,7 @@ function App() {
                     <Route path="/store/:extensionId" element={<ExtensionDetails />} />
                     <Route path="/new" element={<NewRobot />} />
                     <Route path="/robot/:robotId" element={<ControlPanel />} />
+                    <Route path="/robot/:robotId/edit" element={<EditRobot />} />
                     <Route path="/settings" element={<Settings />} />
                 </Routes>
             </div>
