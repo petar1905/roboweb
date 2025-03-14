@@ -29,6 +29,7 @@ function groupExtensionsByManufacturer(extensions: Extension[]): Record<string, 
 }
 
 export default function NewRobot() {
+    localStorage.clear();
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [selectedBrand, setSelectedBrand] = useState("");

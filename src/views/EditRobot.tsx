@@ -7,6 +7,7 @@ import NavigationLink from "../components/NavigationLink";
 import { Extension } from "../classes/ExtensionInventory";
 
 export default function NewRobot() {
+    localStorage.clear();
     const { robotId } = useParams();
     const navigate = useNavigate();
     const robotInventory = new RobotInventory();

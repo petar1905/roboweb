@@ -7,6 +7,7 @@ import { useMediaQuery } from "react-responsive";
 import NavigationBarButton from "../components/NavigationBarButton";
 
 export default function Dashboard() {
+    localStorage.clear();
     const [deleteMode, setDeleteMode] = useState(false);
     const [searchMode, setSearchMode] = useState(false);
     const [robots, setRobots] = useState<Robot[]>([]);
@@ -21,6 +22,8 @@ export default function Dashboard() {
     };
 
     const handleToggleSearchButton = () => {
+        setSearchTerm("");
+        setSearchedRobots(robots);
         setSearchMode(!searchMode);
     };
 
@@ -106,7 +109,12 @@ export default function Dashboard() {
             </nav>
 
             {deleteMode? <p><em>Please select the robots you would like to delete!</em></p> : null}
-            <RobotList robots={searchMode? searchedRobots : robots} deleteMode={deleteMode} handleRobotSelect={handleRobotSelect}/>
+            <RobotList 
+            robots={searchMode? searchedRobots : robots} 
+            deleteMode={deleteMode} 
+            searchMode={searchMode}
+            handleRobotSelect={handleRobotSelect}
+            />
         </div>
     );
 }
@@ -114,14 +122,15 @@ export default function Dashboard() {
 interface RobotListProps {
     robots: Robot[],
     deleteMode: boolean,
+    searchMode: boolean, 
     handleRobotSelect: (robot: Robot, isChecked: boolean) => void
 }
 
-function RobotList({robots, deleteMode, handleRobotSelect}: RobotListProps) {
+function RobotList({robots, deleteMode, searchMode, handleRobotSelect}: RobotListProps) {
     const isMobile = useMediaQuery({ maxWidth: 600 });
     return (
         <>
-            {robots.length == 0? <NoRobotsMessage/> : null}
+            {robots.length == 0? <NoRobotsMessage isSearchMode={searchMode}/> : null}
             <div className="d-flex flex-wrap justify-content-start gap-2" 
             style={{ flexDirection: isMobile? 'column' : 'row' }}>
                 {robots.map((robot) => {
@@ -134,12 +143,27 @@ function RobotList({robots, deleteMode, handleRobotSelect}: RobotListProps) {
     )
 }
 
-function NoRobotsMessage() {
+interface NoRobotsMessageProps {
+    isSearchMode: boolean
+}
+
+function NoRobotsMessage({isSearchMode}: NoRobotsMessageProps) {
+    const NormalModeMessage = () => (
+        <div>
+            <p>You do not have any robots yet.</p>
+            <p>Create a new robot by pressing the ➕ button!</p>
+        </div>
+    );
+
+    const SearchModeMessage =  () => (
+        <div>
+            <p>No robots were found!</p>
+        </div>
+    );
     return (
         <div className="w-100 h-100 text-center m-auto">
             <h1>🤖</h1>
-            <p>You do not have any robots yet.</p>
-            <p>Create a new robot by pressing the ➕ button!</p>
+            {isSearchMode ? <SearchModeMessage/> : <NormalModeMessage/>}
         </div>
     )
 }

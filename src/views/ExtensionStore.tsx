@@ -3,6 +3,7 @@ import ExtensionInventory, { Extension } from "../classes/ExtensionInventory";
 import ExtensionTable from "../components/ExtensionTable";
 
 export default function ExtensionStore() {
+    localStorage.clear();
     const [installedExtensions, setInstalledExtensions] = useState<Extension[]>([]);
     const [availableExtensions, setAvailableExtensions] = useState<Extension[]>([]);
     const extensionInventory = new ExtensionInventory();

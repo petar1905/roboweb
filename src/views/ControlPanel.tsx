@@ -15,21 +15,29 @@ export default function ControlPanel() {
             await robotInventory.openDatabase();
             // @ts-ignore
             const currentRobot = await robotInventory.getRobot(robotId);
+            localStorage.setItem("settings", JSON.stringify(currentRobot?.settings));
             setRobotName(currentRobot?.name);
             // @ts-ignore
             const currentFileURL = URL.createObjectURL(currentRobot?.extension.file);
-            
-            import(currentFileURL).then(module => {
-                const ControlComponent = module.ControlComponent || module.default;
-                setControlComponent(<ControlComponent settings={currentRobot?.settings} />);
-            });
-            URL.revokeObjectURL(currentFileURL);
+
+            /* create iframe element that loads file which is html and set it as control component */
+            const iframe = (
+                <iframe
+                    src={currentFileURL}
+                    className="w-100"
+                />
+            );
+            setControlComponent(iframe);
+
+            // Clean up
+            return () => {
+                URL.revokeObjectURL(currentFileURL);
+            };
         };
         fetchControlComponent();
     }, []);
 
-
-    return(
+    return (
         <div className="p-2">
             <nav className="d-flex pb-2">
                 <NavigationLink href={`/`}>
@@ -42,5 +50,5 @@ export default function ControlPanel() {
             </nav>
             {controlComponent}
         </div>
-    )
+    );
 }

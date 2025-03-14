@@ -3,6 +3,7 @@ import ExtensionInventory, { Extension } from "../classes/ExtensionInventory";
 import { useEffect, useState } from "react";
 
 export default function ExtensionDetails() {
+    localStorage.clear();
     let { extensionId } = useParams();
     const [extension, setExtension] = useState<Extension | null>();
     const [isInstalled, setIsInstalled] = useState<boolean>(false);
