@@ -30,8 +30,8 @@ export default function SettingsForm({settings, setSettings}: SettingsFormProps)
                         <span className="input-group-text" id="basic-addon1">{key}</span>
                         <input type="text" 
                         className="form-control" 
-                        placeholder="Robot Name" 
-                        aria-label="Robot Name" 
+                        placeholder={key} 
+                        aria-label={key} 
                         aria-describedby="basic-addon1"
                         value={value}
                         onChange={(event) => handleSettingChange(key, event.target.value)} />
@@ -43,8 +43,8 @@ export default function SettingsForm({settings, setSettings}: SettingsFormProps)
                         <span className="input-group-text" id="basic-addon1">{key}</span>
                         <input type="number"
                         className="form-control" 
-                        placeholder="Robot Name" 
-                        aria-label="Robot Name" 
+                        placeholder={key} 
+                        aria-label={key}
                         aria-describedby="basic-addon1"
                         value={value}
                         onChange={(event) => handleSettingChange(key, parseFloat(event.target.value))}/>

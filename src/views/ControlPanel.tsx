@@ -25,6 +25,7 @@ export default function ControlPanel() {
                 <iframe
                     src={currentFileURL}
                     className="w-100"
+                    style={{height: "100%"}}
                 />
             );
             setControlComponent(iframe);
@@ -38,7 +39,7 @@ export default function ControlPanel() {
     }, []);
 
     return (
-        <div className="p-2">
+        <div className="p-2" style={{height: "100vh"}}>
             <nav className="d-flex pb-2">
                 <NavigationLink href={`/`}>
                     <NavigationBarButton>⬅</NavigationBarButton>
