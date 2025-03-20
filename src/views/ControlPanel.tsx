@@ -20,7 +20,6 @@ export default function ControlPanel() {
             // @ts-ignore
             const currentFileURL = URL.createObjectURL(currentRobot?.extension.file);
 
-            /* create iframe element that loads file which is html and set it as control component */
             const iframe = (
                 <iframe
                     src={currentFileURL}
@@ -30,7 +29,6 @@ export default function ControlPanel() {
             );
             setControlComponent(iframe);
 
-            // Clean up
             return () => {
                 URL.revokeObjectURL(currentFileURL);
             };
