@@ -96,7 +96,7 @@ export default function Dashboard() {
       };
 
     return (
-        <div className="p-2">
+        <div className="p-2" style={{height: "100vh"}}>
             <nav className="d-flex pb-2">
                 {searchMode? <SearchBar/> : <Title/>}
                 {robots.length > 0? <NavigationBarButton onClick={handleToggleSearchButton}>{searchMode? "🔍" : "🔎"}</NavigationBarButton> : null}
