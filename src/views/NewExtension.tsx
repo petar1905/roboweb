@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import ExtensionInventory, { Extension } from "../classes/ExtensionInventory";
 import NavigationBarButton from "../components/NavigationBarButton";
+import { v4 } from "uuid";
 
 export default function NewExtension() {
     const navigate = useNavigate();
@@ -48,7 +49,7 @@ export default function NewExtension() {
         const newExtension: Extension = {
             metadata: {
                 ...metadata,
-                id: crypto.randomUUID(),
+                id: v4(),
                 contentType: file.type,
             },
             file: new Blob([file], { type: file.type }),
