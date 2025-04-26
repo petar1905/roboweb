@@ -5,9 +5,11 @@ import SettingsForm from "../components/SettingsForm";
 import NavigationBarButton from "../components/NavigationBarButton";
 import NavigationLink from "../components/NavigationLink";
 import { Extension } from "../classes/ExtensionInventory";
+import { useTranslation } from "../hooks/useTranslation";
 
 export default function NewRobot() {
     localStorage.clear();
+    const { t } = useTranslation();
     const { robotId } = useParams();
     const navigate = useNavigate();
     const robotInventory = new RobotInventory();
@@ -47,11 +49,11 @@ export default function NewRobot() {
                 <NavigationLink href={`/robot/${robotId}`}>
                     <NavigationBarButton>⬅</NavigationBarButton>
                 </NavigationLink>
-                <h1 className="w-100 my-auto">Robot {name}</h1>
+                <h1 className="w-100 my-auto">{t("robot")} {name}</h1>
                 {name !== "" ? <NavigationBarButton onClick={handleFinish}>✅</NavigationBarButton> : null}
             </nav>
             <div className="input-group mb-3">
-                <span className="input-group-text" id="basic-addon1">Name</span>
+                <span className="input-group-text" id="basic-addon1">{t("name")}</span>
                 <input type="text" 
                 className="form-control" 
                 placeholder="Robot Name" 

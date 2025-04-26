@@ -1,9 +1,11 @@
 import { useNavigate, useParams } from "react-router";
 import ExtensionInventory, { Extension } from "../classes/ExtensionInventory";
 import { useEffect, useState } from "react";
+import { useTranslation } from "../hooks/useTranslation";
 
 export default function ExtensionDetails() {
     localStorage.clear();
+    const { t } = useTranslation();
     let { extensionId } = useParams();
     const [extension, setExtension] = useState<Extension | null>();
     const [isInstalled, setIsInstalled] = useState<boolean>(false);
@@ -54,8 +56,8 @@ export default function ExtensionDetails() {
             <h1>Details</h1>
             {extension && <ExtensionDetailsTable extension={extension}/>}
             {isInstalled? 
-            <button className="btn btn-danger" onClick={handleDeleteButtonPress}>Delete</button> :
-            <button className="btn btn-success" onClick={handleInstallButtonPress}>Install</button>}
+            <button className="btn btn-danger" onClick={handleDeleteButtonPress}>{t("delete")}</button> :
+            <button className="btn btn-success" onClick={handleInstallButtonPress}>{t("install")}</button>}
         </div>
     )
 }
@@ -70,17 +72,19 @@ function ExtensionDetailsTable({extension}: {extension: Extension}) {
 }
 
 function ExtensionDetailsTableHead() {
+    const { t } = useTranslation();
     return (
         <thead>
             <tr>
-                <th>Property</th>
-                <th>Value</th>
+                <th>{t("property")}</th>
+                <th>{t("value")}</th>
             </tr>
         </thead> 
     )
 }
 
 function ExtensionDetailsTableBody({ extension }: { extension: Extension }) {
+    const { t } = useTranslation();
     const [repositoryName, setRepositoryName] = useState<string | null>(null);
 
     useEffect(() => {
@@ -96,28 +100,28 @@ function ExtensionDetailsTableBody({ extension }: { extension: Extension }) {
     return (
         <tbody>
             <tr>
-                <td>ID</td>
+                <td>{t("id")}</td>
                 <td>{extension.metadata.id}</td>
             </tr>
             <tr>
-                <td>Vendor</td>
+                <td>{t("vendor")}</td>
                 <td>{extension.metadata.manufacturer}</td>
             </tr>
             <tr>
-                <td>Model</td>
+                <td>{t("model")}</td>
                 <td>{extension.metadata.model}</td>
             </tr>
             <tr>
-                <td>Author</td>
+                <td>{t("author")}</td>
                 <td>{extension.metadata.author}</td>
             </tr>
             <tr>
-                <td>Version</td>
+                <td>{t("version")}</td>
                 <td>{extension.metadata.version}</td>
             </tr>
             <tr>
-                <td>License</td>
-                <td>{extension.metadata.license? extension.metadata.license : "Proprietary/Unknown"}</td>
+                <td>{t("license")}</td>
+                <td>{extension.metadata.license? extension.metadata.license : t("proprietary")}</td>
             </tr>
             {extension.metadata.repository && 
                 <RepositoryRow 
@@ -131,9 +135,10 @@ function ExtensionDetailsTableBody({ extension }: { extension: Extension }) {
 }
 
 function RepositoryRow({repositoryLink, repositoryName}: {repositoryLink: string, repositoryName: string}) {
+    const { t } = useTranslation();
     return (
         <tr>
-            <td>Repository</td>
+            <td>{t("repository")}</td>
             <td>
                 <a href={repositoryLink} target="_blank" rel="noopener noreferrer">
                     {repositoryName || repositoryLink}

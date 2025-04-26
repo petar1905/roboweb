@@ -3,12 +3,14 @@ import { useParams } from "react-router";
 import RobotInventory from "../classes/RobotInventory";
 import NavigationBarButton from "../components/NavigationBarButton";
 import NavigationLink from "../components/NavigationLink";
+import { useTranslation } from "../hooks/useTranslation";
 
 export default function ControlPanel() {
+    const { t } = useTranslation();
     const { robotId } = useParams();
     const robotInventory = new RobotInventory();
     const [controlComponent, setControlComponent] = useState<JSX.Element>();
-    const [robotName, setRobotName] = useState<string>();
+    const [robot, setrobot] = useState<string>();
 
     useEffect(() => {
         const fetchControlComponent = async () => {
@@ -16,7 +18,7 @@ export default function ControlPanel() {
             // @ts-ignore
             const currentRobot = await robotInventory.getRobot(robotId);
             localStorage.setItem("settings", JSON.stringify(currentRobot?.settings));
-            setRobotName(currentRobot?.name);
+            setrobot(currentRobot?.name);
             // @ts-ignore
             const currentFileURL = URL.createObjectURL(currentRobot?.extension.file);
 
@@ -42,7 +44,7 @@ export default function ControlPanel() {
                 <NavigationLink href={`/`}>
                     <NavigationBarButton>⬅</NavigationBarButton>
                 </NavigationLink>
-                <h1 className="w-100 my-auto">Robot {robotName}</h1>
+                <h1 className="w-100 my-auto">{t("robot")} {robot}</h1>
                 <NavigationLink href={`/robot/${robotId}/edit`}>
                     <NavigationBarButton>⚙️</NavigationBarButton>
                 </NavigationLink>

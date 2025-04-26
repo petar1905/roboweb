@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import Dropdown from "../components/Dropdown";
 import SettingsForm from "../components/SettingsForm";
 import NavigationBarButton from "../components/NavigationBarButton";
+import { useTranslation } from "../hooks/useTranslation";
 
 function groupExtensionsByManufacturer(extensions: Extension[]): Record<string, string[]> {
     const manufacturerModelMapping: Record<string, Set<string>> = {};
@@ -30,6 +31,7 @@ function groupExtensionsByManufacturer(extensions: Extension[]): Record<string, 
 
 export default function NewRobot() {
     localStorage.clear();
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [selectedBrand, setSelectedBrand] = useState("");
@@ -90,21 +92,21 @@ export default function NewRobot() {
     return (
         <div className="p-2">
             <nav className="d-flex pb-2">
-                <h1 className="w-100 my-auto">New Robot</h1>
+                <h1 className="w-100 my-auto">{t("newRobot")}</h1>
                 {canCreateRobot ? <NavigationBarButton onClick={handleFinish}>✅</NavigationBarButton> : null}
             </nav>
             <div className="input-group mb-3">
-                <span className="input-group-text" id="basic-addon1">Name</span>
+                <span className="input-group-text" id="basic-addon1">{t("name")}</span>
                 <input type="text" 
                 className="form-control" 
-                placeholder="Robot Name" 
+                placeholder={t("robotName")} 
                 aria-label="Robot Name" 
                 aria-describedby="basic-addon1"
                 onChange={handleNameChange} />
             </div>
 
             <p>
-                <Dropdown label="Brand" 
+                <Dropdown label={t("brand")} 
                 value={selectedBrand} 
                 onChange={handleBrandChange} 
                 valueArray={Object.keys(groupedExtensions)}
@@ -112,7 +114,7 @@ export default function NewRobot() {
             </p>
             {selectedBrand && 
                 <p>
-                    <Dropdown label="Model" 
+                    <Dropdown label={t("model")}
                     value={selectedModel} 
                     onChange={handleModelChange} 
                     valueArray={groupedExtensions[selectedBrand]}

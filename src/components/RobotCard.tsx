@@ -1,5 +1,7 @@
 import { ChangeEventHandler, useState } from "react";
 import { Robot } from "../classes/RobotInventory";
+import { useMediaQuery } from "react-responsive";
+import { useTranslation } from "../hooks/useTranslation";
 
 interface RobotCardProps {
     robot: Robot,
@@ -26,7 +28,6 @@ function RobotCardInNormalMode({ robot, style }: RobotCardProps) {
                 <div className="d-flex">
                     <div className="card-body text-center w-100">
                         <h5 className="card-title">{robot.name}</h5>
-                        <p className="card-text">{robot.activity? "Active" : "Inactive"}</p>
                     </div>
                 </div>
             </div>
@@ -35,8 +36,10 @@ function RobotCardInNormalMode({ robot, style }: RobotCardProps) {
 }
 
 function RobotCardInDeleteMode({ robot, onChange, style }: RobotCardProps) {
+    const isMobile = useMediaQuery({ maxWidth: 600 });
+    const checkboxTransform = isMobile ? "scale(1.6) translate(.2em, -363%)" : "scale(1.6) translate(.2rem, -12.5rem)";
     const checkboxStyle: React.CSSProperties = {
-        transform: "scale(1.6) translate(.2rem, -15.7rem)"
+        transform: checkboxTransform
     };
 
     const [checked, setChecked] = useState(false);
@@ -55,7 +58,6 @@ function RobotCardInDeleteMode({ robot, onChange, style }: RobotCardProps) {
             <div className="d-flex">
                 <div className="card-body text-center w-100">
                     <h5 className="card-title">{robot.name}</h5>
-                    <p className="card-text">{robot.activity? "Active" : "Inactive"}</p>
                 </div>
                 <input type="checkbox" style={checkboxStyle} checked={checked} onChange={() => setChecked(!checked)}/>
             </div>

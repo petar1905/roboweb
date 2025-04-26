@@ -3,6 +3,7 @@ import { Extension } from "../classes/ExtensionInventory";
 import NavigationLink from "./NavigationLink";
 import { useMediaQuery } from'react-responsive';
 import NavigationBarButton from "./NavigationBarButton";
+import { useTranslation } from "../hooks/useTranslation";
 
 interface ExtensionTableProps {
     extensions: Extension[],
@@ -45,9 +46,10 @@ export default function ExtensionTable({extensions, title}: ExtensionTableProps)
         }, [searchedExtensions]);
 
     const SearchBar = () => {
+        const { t } = useTranslation();
         return (
           <div className="input-group input-group-sm">
-            <span className="input-group-text" id="inputGroup-sizing-sm">Search</span>
+            <span className="input-group-text" id="inputGroup-sizing-sm">{t("search")}</span>
             <input
               ref={searchInputRef}
               type="text"
@@ -91,13 +93,14 @@ interface ExtensionTableHeadProps {
 
 function ExtensionTableHead({extensions}: ExtensionTableHeadProps) {
     const isMobile = useMediaQuery({ maxWidth: 475 });
+    const { t } = useTranslation();
     return (
         <thead>
             <tr>
-                <th>Vendor</th>
-                <th>Model</th>
-                {!isMobile && <th>Version</th>}
-                {!isMobile && <th>Author</th>}
+                <th>{t("brand")}</th>
+                <th>{t("model")}</th>
+                {!isMobile && <th>{t("version")}</th>}
+                {!isMobile && <th>{t("author")}</th>}
                 {extensions.length > 0? <th></th> : null}
             </tr>
         </thead> 
@@ -131,10 +134,11 @@ interface ExtensionDetailsButtonProps {
 }
 
 function ExtensionDetailsButton({id}: ExtensionDetailsButtonProps) {
+    const { t } = useTranslation();
     return (
         <td className="text-center">                    
             <NavigationLink href={`/store/${id}`}>
-                <button className="btn btn-info">Details</button>
+                <button className="btn btn-info">{t("details")}</button>
             </NavigationLink>
         </td>
     )
